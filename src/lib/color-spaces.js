@@ -213,9 +213,7 @@ export function hexToBases(hex) {
 export const WEB_SAFE_LEVELS = [0x00, 0x33, 0x66, 0x99, 0xcc, 0xff];
 
 const snap = (value) =>
-  WEB_SAFE_LEVELS.reduce((best, level) =>
-    Math.abs(level - value) < Math.abs(best - value) ? level : best,
-  );
+  WEB_SAFE_LEVELS.reduce((best, level) => (Math.abs(level - value) < Math.abs(best - value) ? level : best));
 
 /**
  * The nearest of the 216 web safe colours.
@@ -228,9 +226,7 @@ const snap = (value) =>
  */
 export function toWebSafe(hex) {
   const { r, g, b } = hexToRgb(hex);
-  return [snap(r), snap(g), snap(b)]
-    .map((value) => pad(value, 16, 2).toLowerCase())
-    .join('');
+  return [snap(r), snap(g), snap(b)].map((value) => pad(value, 16, 2).toLowerCase()).join('');
 }
 
 /** All 216, in the conventional order: red outermost, blue innermost. */

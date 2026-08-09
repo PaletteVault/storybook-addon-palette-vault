@@ -13,7 +13,10 @@
 const toLinear = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 
 export function hexToOklch(hex) {
-  const clean = String(hex).replace(/[^0-9a-fA-F]/g, '').padEnd(6, '0').slice(0, 6);
+  const clean = String(hex)
+    .replace(/[^0-9a-fA-F]/g, '')
+    .padEnd(6, '0')
+    .slice(0, 6);
 
   const r = toLinear(parseInt(clean.slice(0, 2), 16) / 255);
   const g = toLinear(parseInt(clean.slice(2, 4), 16) / 255);

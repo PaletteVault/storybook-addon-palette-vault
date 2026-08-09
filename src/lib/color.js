@@ -73,8 +73,7 @@ export function oklabDistance(a, b) {
  * ========================================================================== */
 
 const EPS = 1e-4;
-const inGamut = ([r, g, b]) =>
-  r >= -EPS && r <= 1 + EPS && g >= -EPS && g <= 1 + EPS && b >= -EPS && b <= 1 + EPS;
+const inGamut = ([r, g, b]) => r >= -EPS && r <= 1 + EPS && g >= -EPS && g <= 1 + EPS && b >= -EPS && b <= 1 + EPS;
 
 function oklchToLinear(L, C, hDeg) {
   const h = (hDeg * Math.PI) / 180;
@@ -123,7 +122,10 @@ export function hexToOklch(hex) {
  * ========================================================================== */
 
 export function normalizeHex(value) {
-  const clean = String(value).replace(/[^0-9a-fA-F]/g, '').slice(0, 6).toLowerCase();
+  const clean = String(value)
+    .replace(/[^0-9a-fA-F]/g, '')
+    .slice(0, 6)
+    .toLowerCase();
   return clean.length === 6 ? clean : '888888';
 }
 
@@ -138,7 +140,11 @@ export function hexToRgb(hex) {
 
 export const rgbToHex = (r, g, b) =>
   [r, g, b]
-    .map((v) => Math.round(Math.min(255, Math.max(0, v))).toString(16).padStart(2, '0'))
+    .map((v) =>
+      Math.round(Math.min(255, Math.max(0, v)))
+        .toString(16)
+        .padStart(2, '0'),
+    )
     .join('');
 
 export function hexToHsl(hex) {
@@ -193,15 +199,26 @@ export function contrastRatio(hexA, hexB) {
 export const paletteSlug = (colors) => colors.map(normalizeHex).join('');
 
 export function parseSlug(slug) {
-  const clean = String(slug ?? '').replace(/[^0-9a-fA-F]/g, '').toLowerCase();
+  const clean = String(slug ?? '')
+    .replace(/[^0-9a-fA-F]/g, '')
+    .toLowerCase();
   if (clean.length !== 24) return null;
   return [0, 1, 2, 3].map((i) => clean.slice(i * 6, i * 6 + 6));
 }
 
 const HUE_NAMES = [
-  [15, 'red'], [45, 'orange'], [68, 'yellow'], [100, 'lime'], [155, 'green'],
-  [195, 'cyan'], [220, 'azure'], [255, 'blue'], [280, 'violet'], [310, 'purple'],
-  [340, 'magenta'], [360, 'red'],
+  [15, 'red'],
+  [45, 'orange'],
+  [68, 'yellow'],
+  [100, 'lime'],
+  [155, 'green'],
+  [195, 'cyan'],
+  [220, 'azure'],
+  [255, 'blue'],
+  [280, 'violet'],
+  [310, 'purple'],
+  [340, 'magenta'],
+  [360, 'red'],
 ];
 
 const NOUNS = {

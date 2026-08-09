@@ -16,11 +16,7 @@
  * ============================================================================
  */
 
-import type {
-	Renderer,
-	PartialStoryFn as StoryFunction,
-	StoryContext,
-} from 'storybook/internal/types';
+import type { Renderer, PartialStoryFn as StoryFunction, StoryContext } from 'storybook/internal/types';
 import { useEffect, useChannel } from 'storybook/preview-api';
 
 import { EVENT_REQUEST, EVENT_RESULT, PARAM_KEY } from './constants';
@@ -28,43 +24,40 @@ import { scanColors } from './scan';
 
 const SETTLE_MS = 350;
 
-export const withPaletteVault = (
-	StoryFn: StoryFunction<Renderer>,
-	context: StoryContext<Renderer>,
-) => {
-	const emit = useChannel({
-		[EVENT_REQUEST]: () => report(),
-	});
+export const withPaletteVault = (StoryFn: StoryFunction<Renderer>, context: StoryContext<Renderer>) => {
+  const emit = useChannel({
+    [EVENT_REQUEST]: () => report(),
+  });
 
-	const disabled = context.parameters?.[PARAM_KEY]?.disable === true;
+  const disabled = context.parameters?.[PARAM_KEY]?.disable === true;
 
-	const report = () => {
-		if (disabled) return;
-		try {
-			emit(EVENT_RESULT, { colors: scanColors(), storyId: context.id });
-		} catch (error) {
-			/*
-			 * Reported rather than swallowed. A scan that throws leaves the
-			 * panel showing the previous story's colours, which is worse than
-			 * an empty panel because it is wrong rather than absent.
-			 */
-			emit(EVENT_RESULT, {
-				colors: [],
-				storyId: context.id,
-				error: (error as Error).message,
-			});
-		}
-	};
+  const report = () => {
+    if (disabled) return;
+    try {
+      emit(EVENT_RESULT, { colors: scanColors(), storyId: context.id });
+    } catch (error) {
+      /*
+       * Reported rather than swallowed. A scan that throws leaves the
+       * panel showing the previous story's colours, which is worse than
+       * an empty panel because it is wrong rather than absent.
+       */
+      emit(EVENT_RESULT, {
+        colors: [],
+        storyId: context.id,
+        error: (error as Error).message,
+      });
+    }
+  };
 
-	useEffect(() => {
-		if (disabled) return;
+  useEffect(() => {
+    if (disabled) return;
 
-		report();
-		const timer = setTimeout(report, SETTLE_MS);
-		return () => clearTimeout(timer);
-	}, [context.id, disabled]);
+    report();
+    const timer = setTimeout(report, SETTLE_MS);
+    return () => clearTimeout(timer);
+  }, [context.id, disabled]);
 
-	return StoryFn();
+  return StoryFn();
 };
 
 export const decorators = [withPaletteVault];

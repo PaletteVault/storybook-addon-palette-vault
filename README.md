@@ -45,14 +45,14 @@ that way.
 
 Each property is measured by its own geometry:
 
-| Property | Weight | Counted when |
-| --- | --- | --- |
-| `background-color` | box area | always |
-| `border-*-color` | side length times thickness | thickness above zero and style not `none` |
-| `outline-color` | ring times thickness | same |
-| `color` | ink of the glyphs | the element has text of its own |
-| `text-decoration-color` | text length times rule thickness | `text-decoration-line` is not `none` |
-| `fill` / `stroke` | box area / ring times thickness | the element is inside an SVG |
+| Property                | Weight                           | Counted when                              |
+| ----------------------- | -------------------------------- | ----------------------------------------- |
+| `background-color`      | box area                         | always                                    |
+| `border-*-color`        | side length times thickness      | thickness above zero and style not `none` |
+| `outline-color`         | ring times thickness             | same                                      |
+| `color`                 | ink of the glyphs                | the element has text of its own           |
+| `text-decoration-color` | text length times rule thickness | `text-decoration-line` is not `none`      |
+| `fill` / `stroke`       | box area / ring times thickness  | the element is inside an SVG              |
 
 Two of those conditions exist because of measured bugs rather than theory. A
 button with no border still reports a border color, because the property
