@@ -11,7 +11,6 @@ export default [
       '!.*',
       '*.tgz',
       'dist/',
-      'scripts/',
       'coverage/',
       'node_modules/',
       'storybook-static/',

@@ -1,61 +1,32 @@
 name: Build
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
-    strategy:
-      matrix:
-        node-version: [20.19, 22.12]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Check for linter errors
-        run: pnpm lint
-
   build:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     strategy:
       matrix:
         node-version: [20.19, 22.12]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: npm
 
-      - name: Install dependencies
-        run: pnpm install
+      - run: npm ci
 
-      - name: Build addon
-        run: pnpm build
+      - name: Lint
+        run: npm run lint
 
-      - name: Build Storybook
-        run: pnpm build-storybook
+      - name: Build the addon
+        run: npm run build
+
+      # Builds the development Storybook in src/stories against the freshly
+      # built addon. Catches the failure that matters most here: a panel that
+      # compiles but throws once Storybook loads it.
+      - name: Build the development Storybook
+        run: npm run build-storybook

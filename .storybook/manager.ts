@@ -1,15 +1,11 @@
-import { addons } from 'storybook/manager-api';
-
-import { renderLabel } from '../src/manager-helpers';
-
 /*
- * This is an example of opt-in usage of addon exports. Your users can choose to
- * import and use this helper, or not. Opt-in helpers should be exported in their
- * own file rather than in `manager.tsx`, because importing `manager.tsx` multiple
- * times can cause the addon registration code to run multiple times.
+ * Manager config for the development Storybook in this repo.
+ *
+ * The addon-kit template used this file to demonstrate an opt-in sidebar
+ * label renderer exported from the addon. This addon exports no such helper,
+ * so there is nothing to configure here yet. The file stays because Storybook
+ * expects it and because it is the place any future manager-level setting
+ * would go.
  */
-addons.setConfig({
-  sidebar: {
-    renderLabel,
-  },
-});
+
+export {};
